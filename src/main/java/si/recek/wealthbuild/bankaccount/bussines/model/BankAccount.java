@@ -25,13 +25,18 @@ public class BankAccount {
 
     private String name;
 
+    @Setter(AccessLevel.PRIVATE)
     private BigDecimal initialBalance;
 
     @Setter(AccessLevel.PRIVATE)
     private BigDecimal balance;
 
-    public BankAccount() {
-        initialBalance = BigDecimal.ZERO;
-        balance = BigDecimal.ZERO;
+    private AccountType accountType;
+
+    private BankAccount() {}
+
+    public BankAccount(BigDecimal initialBalance) {
+        this.initialBalance = initialBalance;
+        balance = initialBalance;
     }
 }

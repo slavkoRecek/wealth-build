@@ -11,5 +11,9 @@ public class BankAccountDTO {
 
     private BigDecimal balance;
 
+    private BigDecimal initialBalance;
+
     private String name;
+
+    private String accountType;
 }

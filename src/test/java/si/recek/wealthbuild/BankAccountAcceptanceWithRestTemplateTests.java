@@ -18,6 +18,7 @@ import si.recek.wealthbuild.bankaccount.resource.model.BankAccountDTO;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.swing.text.html.parser.Entity;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -69,7 +70,7 @@ public class BankAccountAcceptanceWithRestTemplateTests {
 	private void insertBankAccount(String iban) {
         TestTransaction.start();
         TestTransaction.flagForCommit();
-        BankAccount ba = new BankAccount();
+        BankAccount ba = new BankAccount(new BigDecimal("0"));
         ba.setIban(iban);
         entityManager.persist(ba);
         TestTransaction.end();

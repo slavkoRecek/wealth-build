@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import si.recek.wealthbuild.bankaccount.bussines.model.BankAccount;
 import si.recek.wealthbuild.bankaccount.bussines.repository.BankAccountRepository;
 import si.recek.wealthbuild.bankaccount.resource.model.BankAccountDTO;
+import si.recek.wealthbuild.util.GeneralEntityDtoMapper;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class BankAccountServiceImpl implements BankAccountService{

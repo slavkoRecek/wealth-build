@@ -1,4 +1,4 @@
-package si.recek.wealthbuild.bankaccount.bussines.service;
+package si.recek.wealthbuild.util;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
