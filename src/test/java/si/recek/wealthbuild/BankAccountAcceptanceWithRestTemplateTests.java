@@ -53,6 +53,7 @@ public class BankAccountAcceptanceWithRestTemplateTests {
     }
 
 	@Test
+    @Autowired
 	public void testGetAllAccounts() {
         String url = "/bank-accounts/";
         ResponseEntity<BankAccountDTO[]> baEntity = restTemplate.getForEntity (generateURL(url), BankAccountDTO[].class);

@@ -23,7 +23,7 @@ public class GeneralEntityDtoMapper {
         return modelMapper.map(source, destinationType);
     }
 
-    public <D> List<D> map(List list, Class<D> destinationType){
+    public <D> List<D> mapList(List list, Class<D> destinationType){
         list.stream().map(o -> modelMapper.map(o, destinationType)).collect(Collectors.toList());
         List<D> result = new ArrayList<>();
         for (Object o: list) {
