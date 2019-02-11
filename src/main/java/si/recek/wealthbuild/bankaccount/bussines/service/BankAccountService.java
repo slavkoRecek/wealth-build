@@ -1,15 +1,16 @@
 package si.recek.wealthbuild.bankaccount.bussines.service;
 
-import si.recek.wealthbuild.bankaccount.resource.model.BankAccountDTO;
+import si.recek.wealthbuild.bankaccount.resource.model.BankAccountCreationVO;
+import si.recek.wealthbuild.bankaccount.resource.model.BankAccountVO;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface BankAccountService {
 
-    List<BankAccountDTO> getAllBankAccounts();
+    List<BankAccountVO> getAllBankAccounts();
 
-    BankAccountDTO createBankAccount(BankAccountDTO bankAccountDTO);
+    BankAccountVO createBankAccount(BankAccountCreationVO bankAccountCreationVO);
 
-    Optional<BankAccountDTO> getBankAccountById(Long id);
+    Optional<BankAccountVO> getBankAccountById(Long id);
 }

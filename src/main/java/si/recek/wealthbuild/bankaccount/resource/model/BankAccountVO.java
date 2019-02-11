@@ -10,19 +10,9 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Data
-public class BankAccountDTO {
+public class BankAccountVO extends AbstractBankAccountVO {
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
-    private String iban;
-
     private BigDecimal balance;
-
-    @NotNull
-    private BigDecimal initialBalance;
-
-    private String name;
-
-    private String accountType;
 }

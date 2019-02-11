@@ -5,7 +5,8 @@ import org.springframework.stereotype.Service;
 import si.recek.wealthbuild.bankaccount.bussines.model.AccountType;
 import si.recek.wealthbuild.bankaccount.bussines.model.BankAccount;
 import si.recek.wealthbuild.bankaccount.bussines.repository.BankAccountRepository;
-import si.recek.wealthbuild.bankaccount.resource.model.BankAccountDTO;
+import si.recek.wealthbuild.bankaccount.resource.model.BankAccountCreationVO;
+import si.recek.wealthbuild.bankaccount.resource.model.BankAccountVO;
 import si.recek.wealthbuild.util.GeneralEntityDtoMapper;
 
 import java.util.List;
@@ -21,25 +22,25 @@ public class BankAccountServiceImpl implements BankAccountService{
     GeneralEntityDtoMapper generalMapper;
 
     @Override
-    public List<BankAccountDTO> getAllBankAccounts() {
+    public List<BankAccountVO> getAllBankAccounts() {
 
         List<BankAccount> bankAccounts = bankAccountRepository.findAll();
-        return generalMapper.mapList(bankAccounts, BankAccountDTO.class);
+        return generalMapper.mapList(bankAccounts, BankAccountVO.class);
     }
 
     @Override
-    public BankAccountDTO createBankAccount(BankAccountDTO bankAccountDTO) {
-        BankAccount bankAccount = new BankAccount(bankAccountDTO.getInitialBalance());
-        bankAccount.setAccountType(AccountType.valueOf(bankAccountDTO.getAccountType()));
-        bankAccount.setName(bankAccountDTO.getName());
-        bankAccount.setIban(bankAccountDTO.getIban());
+    public BankAccountVO createBankAccount(BankAccountCreationVO bankAccountCreationVO) {
+        BankAccount bankAccount = new BankAccount(bankAccountCreationVO.getInitialBalance());
+        bankAccount.setAccountType(AccountType.valueOf(bankAccountCreationVO.getAccountType()));
+        bankAccount.setName(bankAccountCreationVO.getName());
+        bankAccount.setIban(bankAccountCreationVO.getIban());
         bankAccount = bankAccountRepository.save(bankAccount);
-        return generalMapper.map(bankAccount, BankAccountDTO.class);
+        return generalMapper.map(bankAccount, BankAccountVO.class);
     }
 
     @Override
-    public Optional<BankAccountDTO> getBankAccountById(Long id) {
-        return bankAccountRepository.findById(id).map(bankAccount -> generalMapper.map(bankAccount, BankAccountDTO.class));
+    public Optional<BankAccountVO> getBankAccountById(Long id) {
+        return bankAccountRepository.findById(id).map(bankAccount -> generalMapper.map(bankAccount, BankAccountVO.class));
     }
 
 
