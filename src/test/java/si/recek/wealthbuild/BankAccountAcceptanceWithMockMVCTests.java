@@ -23,6 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import si.recek.wealthbuild.bankaccount.bussines.model.AccountType;
 import si.recek.wealthbuild.bankaccount.bussines.model.BankAccount;
@@ -38,11 +39,14 @@ import si.recek.wealthbuild.util.StringUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -86,19 +90,49 @@ public class BankAccountAcceptanceWithMockMVCTests {
                 .andReturn();
         String json = result.getResponse().getContentAsString();
         assertAllBankAccountsContent(json);
-        /*Resources<Resource<BankAccountVO>> bankAccountResources = mapper.readValue(json, new TypeReference<Resources<Resource<BankAccountVO>>>() {
-        });
-        List<Resource<BankAccountVO>> resourceList = Lists.from(bankAccountResources.getContent().iterator());
-        assertThat(resourceList).hasSize(1);
-        assertThat(resourceList.get(0).getLink("self").toString()).isEqualTo("");
-        List<BankAccountVO> bankAccounts = resourceList.stream().map(Resource::getContent).collect(Collectors.toList());
-        assertThat(bankAccounts).hasSize(1);
-        assertThat(bankAccounts.get(0).getIban()).isEqualTo(iban);
-        assertThat(bankAccounts.get(0).getId()).isEqualTo(1L);
-        assertThat(bankAccounts.get(0).getAccountType()).isEqualTo(AccountType.OPERATIONAL.toString());
-        assertThat(bankAccounts.get(0).getBalance()).isEqualTo(new BigDecimal("20"));
-        assertThat(bankAccounts.get(0).getInitialBalance()).isEqualTo(new BigDecimal("20"));*/
 
+    }
+
+    @Test
+    public void testGetAccount() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        String url = "/bank-account/1";
+        String iban = "SI56 123 22154 8754";
+        String name = "My first account";
+        insertBankAccount(iban, name);
+        ResultActions result = mvc.perform(MockMvcRequestBuilders.get(url).accept(MediaType.APPLICATION_JSON));
+        result
+            .andExpect(status().isOk())
+            .andReturn();
+        String json = result.andReturn().getResponse().getContentAsString();
+        assertAllBankAccountContent(json);
+        result.andExpect(jsonPath("iban", is(iban)));
+        result.andExpect(jsonPath("name", is(name)));
+        result.andExpect(jsonPath("accountType", is("OPERATIONAL")));
+        result.andExpect(jsonPath("initialBalance", is(20)));
+        result.andExpect(jsonPath("balance", is(20)));
+        result.andExpect(jsonPath("id", is(1)));
+        result.andExpect(jsonPath("_links.self.href", is("http://localhost/bank-account/1")));
+
+
+    }
+
+    private void assertAllBankAccountContent(String json) {
+        String expected = "{\n" +
+                "        \"iban\": \"SI56123221548754\",\n" +
+                "        \"initialBalance\": 20,\n" +
+                "        \"name\": \"My first account\",\n" +
+                "        \"accountType\": \"OPERATIONAL\",\n" +
+                "        \"id\": 1,\n" +
+                "        \"balance\": 20,\n" +
+                "        \"_links\": {\n" +
+                "          \"self\": {\n" +
+                "            \"href\": \"http://localhost/bank-account/1\"\n" +
+                "          }\n" +
+                "        }\n" +
+                "      }\n";
+        expected = StringUtils.removeIrrelevantCharacters(expected);
+        assertThat(StringUtils.removeIrrelevantCharacters(json)).isEqualTo(expected);
     }
 
     private void assertAllBankAccountsContent(String json) {
@@ -153,16 +187,6 @@ public class BankAccountAcceptanceWithMockMVCTests {
 
         String json = result.getResponse().getContentAsString();
         assertCreatedBankAccountJSON(json);
-
-
-//        assertThat(bankAccountResource.getLink("self").toString()).isEqualTo("fdgf");
-//        BankAccountVO createdAccount = bankAccountResource.getContent();
-//        assertThat(createdAccount.getInitialBalance()).isEqualTo(baDTO.getInitialBalance());
-//        assertThat(createdAccount.getBalance()).isEqualTo(baDTO.getInitialBalance());
-//        assertThat(createdAccount.getName()).isEqualTo(baDTO.getName());
-//        assertThat(createdAccount.getAccountType()).isEqualTo(baDTO.getAccountType());
-//        assertThat(createdAccount.getIban()).isEqualTo(baDTO.getIban());
-
     }
 
     private void assertCreatedBankAccountJSON(String json) {
@@ -192,7 +216,9 @@ public class BankAccountAcceptanceWithMockMVCTests {
         ba.setAccountType(AccountType.OPERATIONAL);
         List<BankAccount> bankAccounts = new ArrayList<>();
         bankAccounts.add(ba);
+
         when(bankAccountRepository.findAll()).thenReturn(bankAccounts);
+        when(bankAccountRepository.findById(any(Long.class))).thenReturn(Optional.of(ba));
     }
 
 }

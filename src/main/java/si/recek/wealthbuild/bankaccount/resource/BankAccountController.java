@@ -34,7 +34,9 @@ public class BankAccountController {
         List<Resource<BankAccountVO>> resourceList = bankAccountService.getAllBankAccounts().stream()
                                                         .map(bankAccountDTO -> resourceAssembler.toResource(bankAccountDTO))
                                                         .collect(Collectors.toList());
-        return new Resources<>(resourceList, linkTo(methodOn(BankAccountController.class).getAll()).withSelfRel());
+        Resources<Resource<BankAccountVO>> resources = new Resources<>(resourceList, linkTo(methodOn(BankAccountController.class).getAll()).withSelfRel());
+
+        return resources;
     }
 
     @PostMapping(value = "/bank-accounts")
