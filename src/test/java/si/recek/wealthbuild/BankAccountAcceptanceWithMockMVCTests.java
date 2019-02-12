@@ -105,7 +105,7 @@ public class BankAccountAcceptanceWithMockMVCTests {
 
         String expected = "{\n" +
                 "  \"_embedded\": {\n" +
-                "    \"bankAccountVOList\": [\n" +
+                "    \"bankAccounts\": [\n" +
                 "      {\n" +
                 "        \"iban\": \"SI56123221548754\",\n" +
                 "        \"initialBalance\": 20,\n" +
