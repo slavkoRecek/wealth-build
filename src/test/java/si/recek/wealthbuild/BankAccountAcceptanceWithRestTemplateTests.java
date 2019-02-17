@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.transaction.TestTransaction;
@@ -22,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -51,19 +54,19 @@ public class BankAccountAcceptanceWithRestTemplateTests {
     }
 
 	@Test
-    @Ignore
 	public void testGetAllAccounts() {
         String url = "/bank-accounts/";
-        ResponseEntity<BankAccountVO[]> baEntity = restTemplate.getForEntity (generateURL(url), BankAccountVO[].class);
-        List<BankAccountVO> accountDTOS = Arrays.asList(baEntity.getBody());
-        assertThat(accountDTOS).isEmpty();
+        Resources<Resource<BankAccountVO>> resources = restTemplate.getForObject(generateURL(url), Resources.class);
+        assertThat(resources.getContent().isEmpty());
+
         String iban = "SI56 123 22154 8754";
         insertBankAccount(iban);
 
-        baEntity = restTemplate.getForEntity (generateURL(url), BankAccountVO[].class);
-        accountDTOS = Arrays.asList(baEntity.getBody());
-        assertThat(accountDTOS).hasSize(1);
-        assertThat(accountDTOS.get(0).getIban()).isEqualTo(iban);
+        resources = restTemplate.getForObject(generateURL(url), Resources.class);
+        assertThat(resources.getContent().size()).isEqualTo(1);
+        BankAccountVO ba = resources.getContent().stream().map(bankAccountVOResource -> bankAccountVOResource.getContent()).findFirst().get();
+
+        assertThat(ba.getIban()).isEqualTo(iban);
 	}
 
 	private void insertBankAccount(String iban) {

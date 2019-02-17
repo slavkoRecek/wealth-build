@@ -111,7 +111,7 @@ public class BankAccountAcceptanceWithMockMVCTests {
         result.andExpect(jsonPath("accountType", is("OPERATIONAL")));
         result.andExpect(jsonPath("initialBalance", is(20)));
         result.andExpect(jsonPath("balance", is(20)));
-        result.andExpect(jsonPath("id", is(1)));
+        result.andExpect(jsonPath("id", is(1 )));
         result.andExpect(jsonPath("_links.self.href", is("http://localhost/bank-account/1")));
 
 

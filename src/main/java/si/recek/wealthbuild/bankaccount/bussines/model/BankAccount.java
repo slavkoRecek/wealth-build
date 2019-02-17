@@ -33,6 +33,7 @@ public class BankAccount {
 
     private AccountType accountType;
 
+
     private BankAccount() {}
 
     public BankAccount(BigDecimal initialBalance) {
