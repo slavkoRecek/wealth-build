@@ -2,6 +2,7 @@ package si.recek.wealthbuild;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.assertj.core.api.Condition;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,11 +35,13 @@ import si.recek.wealthbuild.bankaccount.resource.BankAccountResourceAssembler;
 import si.recek.wealthbuild.bankaccount.resource.model.BankAccountCreationVO;
 import si.recek.wealthbuild.bankaccount.resource.model.BankAccountVO;
 import si.recek.wealthbuild.util.GeneralEntityDtoMapper;
+import si.recek.wealthbuild.util.HalUtils;
 import si.recek.wealthbuild.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -187,6 +190,12 @@ public class BankAccountAcceptanceWithMockMVCTests {
 
         String json = result.getResponse().getContentAsString();
         assertCreatedBankAccountJSON(json);
+        ObjectMapper objectMapper = HalUtils.getHalObjectMapper();
+        Resource<BankAccountVO> bankAccountVOResource  = objectMapper.readValue(json, new TypeReference<Resource<BankAccountVO>>() {});
+        assertThat(bankAccountVOResource.getContent().getIban()).isEqualTo(iban);
+        assertThat(bankAccountVOResource.getLinks()).hasSize(1);
+
+        assertThat(bankAccountVOResource.getLinks().get(0).getHref()).isEqualTo("http://localhost/bank-account/1");
     }
 
     private void assertCreatedBankAccountJSON(String json) {
