@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "WealthBuildApplication",
+            "request": "launch",
+            "mainClass": "si.recek.wealthbuild.WealthBuildApplication",
+            "projectName": "wealth-build"
+        }
+    ]
+}

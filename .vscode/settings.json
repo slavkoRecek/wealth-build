@@ -1,0 +1,17 @@
+{"java.test.config": [
+    {
+        "name": "myConfiguration",
+        "workingDirectory": "${workspaceFolder}",
+        "args": [],
+        "vmargs": [],
+        //"env": { "spring.config.location": "classpath:/target/test-classes/" },
+        "env": { "spring.config.location": "classpath:/src/test/resources/" },
+    },
+    {
+        // Another configuration item...
+    },
+  
+],
+"java.test.defaultConfig": "myConfiguration",
+"maven.view": "flat"
+}

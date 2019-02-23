@@ -19,7 +19,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
-import org.springframework.hateoas.client.Traverson;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,7 +28,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import si.recek.wealthbuild.bankaccount.bussines.model.AccountType;
 import si.recek.wealthbuild.bankaccount.bussines.model.BankAccount;
 import si.recek.wealthbuild.bankaccount.bussines.repository.BankAccountRepository;
-import si.recek.wealthbuild.bankaccount.bussines.service.BankAccountService;
 import si.recek.wealthbuild.bankaccount.bussines.service.BankAccountServiceImpl;
 import si.recek.wealthbuild.bankaccount.resource.BankAccountResourceAssembler;
 import si.recek.wealthbuild.bankaccount.resource.model.BankAccountCreationVO;
@@ -41,9 +39,7 @@ import si.recek.wealthbuild.util.StringUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -195,7 +191,7 @@ public class BankAccountAcceptanceWithMockMVCTests {
         assertThat(bankAccountVOResource.getContent().getIban()).isEqualTo(iban);
         assertThat(bankAccountVOResource.getLinks()).hasSize(1);
 
-        assertThat(bankAccountVOResource.getLinks().get(0).getHref()).isEqualTo("http://localhost/bank-account/1");
+        assertThat(bankAccountVOResource.getLinks().get(0).getHref()).isEqualTo( "http://localhost/bank-account/1");
     }
 
     private void assertCreatedBankAccountJSON(String json) {
