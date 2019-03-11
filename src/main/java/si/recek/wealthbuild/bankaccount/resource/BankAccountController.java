@@ -1,7 +1,9 @@
 package si.recek.wealthbuild.bankaccount.resource;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import si.recek.wealthbuild.bankaccount.resource.model.BankAccountCreationVO;
 import si.recek.wealthbuild.bankaccount.resource.model.BankAccountVO;
 import si.recek.wealthbuild.util.ResourceNotFoundException;
 
+import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -21,13 +24,22 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(value = "/")
+@Slf4j
 public class BankAccountController {
+
+    @Value("${slavko}")
+    String myvar;
 
     @Autowired
     BankAccountService bankAccountService;
 
     @Autowired
     BankAccountResourceAssembler resourceAssembler;
+
+    @PostConstruct
+    public void init(){
+      log.warn("MyVar value is {}", myvar);
+    }
 
     @GetMapping(value = "/bank-accounts")
     public Resources<Resource<BankAccountVO>> getAll() {
