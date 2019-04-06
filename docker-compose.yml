@@ -7,10 +7,9 @@ services:
     - "8080:8080"
 
     environment:
-      SPRING_APPLICATION_JSON: '{
-          "slavko": "value123456789",
-          "spring.datasource.url": "jdbc:postgresql://db:5432/postgres"
-        }'
+      slavko: value123456789
+      spring_datasource_url: jdbc:postgresql://db:5432/postgres
+
     deploy:
       replicas: 1
 

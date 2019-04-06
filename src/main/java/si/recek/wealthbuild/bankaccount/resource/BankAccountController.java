@@ -27,19 +27,12 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 @Slf4j
 public class BankAccountController {
 
-    @Value("${slavko}")
-    String myvar;
-
     @Autowired
     BankAccountService bankAccountService;
 
     @Autowired
     BankAccountResourceAssembler resourceAssembler;
 
-    @PostConstruct
-    public void init(){
-      log.warn("MyVar value is {}", myvar);
-    }
 
     @GetMapping(value = "/bank-accounts")
     public Resources<Resource<BankAccountVO>> getAll() {
