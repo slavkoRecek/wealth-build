@@ -2,23 +2,17 @@ package si.recek.wealthbuild;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.assertj.core.api.Condition;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-import org.modelmapper.internal.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.Resources;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,7 +23,8 @@ import si.recek.wealthbuild.bankaccount.bussines.model.AccountType;
 import si.recek.wealthbuild.bankaccount.bussines.model.BankAccount;
 import si.recek.wealthbuild.bankaccount.bussines.repository.BankAccountRepository;
 import si.recek.wealthbuild.bankaccount.bussines.service.BankAccountServiceImpl;
-import si.recek.wealthbuild.bankaccount.resource.BankAccountResourceAssembler;
+import si.recek.wealthbuild.bankaccount.resource.endpoint.BankAccountController;
+import si.recek.wealthbuild.bankaccount.resource.resourceassembler.BankAccountResourceAssembler;
 import si.recek.wealthbuild.bankaccount.resource.model.BankAccountCreationVO;
 import si.recek.wealthbuild.bankaccount.resource.model.BankAccountVO;
 import si.recek.wealthbuild.util.GeneralEntityDtoMapper;
@@ -49,11 +44,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-//@SpringBootTest
-@WebMvcTest
-@AutoConfigureMockMvc(secure = false)
+@WebMvcTest(controllers = BankAccountController.class)
 @Import({BankAccountServiceImpl.class, GeneralEntityDtoMapper.class, BankAccountResourceAssembler.class})
-public class BankAccountAcceptanceWithMockMVCTests {
+public class BankAccountWithMockMVCTests {
 
     @MockBean
     BankAccountRepository bankAccountRepository;

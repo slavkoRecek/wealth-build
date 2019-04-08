@@ -2,12 +2,15 @@ package si.recek.wealthbuild.bankaccount.bussines.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import si.recek.wealthbuild.bankaccount.bussines.model.AccountType;
 import si.recek.wealthbuild.bankaccount.bussines.model.BankAccount;
 import si.recek.wealthbuild.bankaccount.bussines.repository.BankAccountRepository;
 import si.recek.wealthbuild.bankaccount.resource.model.BankAccountCreationVO;
+import si.recek.wealthbuild.bankaccount.resource.model.BankAccountTransactionVO;
 import si.recek.wealthbuild.bankaccount.resource.model.BankAccountVO;
 import si.recek.wealthbuild.util.GeneralEntityDtoMapper;
+import si.recek.wealthbuild.util.ResourceNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,9 +42,13 @@ public class BankAccountServiceImpl implements BankAccountService{
     }
 
     @Override
-    public Optional<BankAccountVO> getBankAccountById(Long id) {
-        return bankAccountRepository.findById(id).map(bankAccount -> generalMapper.map(bankAccount, BankAccountVO.class));
+    public BankAccountVO getBankAccountById(Long id) {
+        return generalMapper.map(getBankAccount(id), BankAccountVO.class);
     }
 
+    @Override
+    public BankAccount getBankAccount(Long id) {
+        return bankAccountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+    }
 
 }

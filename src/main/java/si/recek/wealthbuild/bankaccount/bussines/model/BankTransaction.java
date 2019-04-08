@@ -27,7 +27,7 @@ public class BankTransaction {
     private BigDecimal amount;
 
     @Setter(AccessLevel.PRIVATE)
-    private BigDecimal balance;
+    private BigDecimal balanceAfter;
 
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

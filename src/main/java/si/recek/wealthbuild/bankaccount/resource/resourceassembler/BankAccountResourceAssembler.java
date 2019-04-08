@@ -1,8 +1,10 @@
-package si.recek.wealthbuild.bankaccount.resource;
+package si.recek.wealthbuild.bankaccount.resource.resourceassembler;
 
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceAssembler;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.stereotype.Component;
+import si.recek.wealthbuild.bankaccount.resource.endpoint.BankAccountController;
 import si.recek.wealthbuild.bankaccount.resource.model.BankAccountVO;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -13,6 +15,6 @@ public class BankAccountResourceAssembler implements ResourceAssembler<BankAccou
     @Override
     public Resource<BankAccountVO> toResource(BankAccountVO bankAccountVO) {
         return new Resource<BankAccountVO>(bankAccountVO,
-                linkTo(methodOn(BankAccountController.class).getOne(bankAccountVO.getId())).withSelfRel());
+                ControllerLinkBuilder.linkTo(methodOn(BankAccountController.class).getOneBankAccount(bankAccountVO.getId())).withSelfRel());
     }
 }

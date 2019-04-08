@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 //@SpringBootTest
 @Transactional
-public class BankAccountAcceptanceWithRestTemplateTests {
+public class BankAccountWithRestTemplateTests {
 
     protected TestRestTemplate restTemplate;
     @Value("${local.server.port}")
