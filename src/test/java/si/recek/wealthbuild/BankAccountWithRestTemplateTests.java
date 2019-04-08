@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import si.recek.wealthbuild.bankaccount.bussines.model.BankAccount;
 import si.recek.wealthbuild.bankaccount.resource.model.BankAccountVO;
+import si.recek.wealthbuild.util.BankAccountTestFactory;
 import si.recek.wealthbuild.util.HalUtils;
 
 import javax.annotation.PostConstruct;
@@ -28,26 +29,11 @@ import java.math.BigDecimal;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@SpringBootTest
 @Transactional
-public class BankAccountWithRestTemplateTests {
+public class BankAccountWithRestTemplateTests extends RestTemplateEnabledTest {
 
-    protected TestRestTemplate restTemplate;
-    @Value("${local.server.port}")
-    protected int port;
     @Autowired
-    EntityManager entityManager;
-
-    @PostConstruct
-    public void initialize() {
-        restTemplate = new TestRestTemplate();
-    }
-
-    protected String generateURL(String uri) {
-        return "http://localhost:" + port + uri;
-    }
-
+    BankAccountTestFactory bankAccountTestFactory;
     @Before
     public void setUp() {
         TestTransaction.end();
@@ -61,8 +47,7 @@ public class BankAccountWithRestTemplateTests {
         assertThat(resources.getContent().isEmpty());
 
         String iban = "SI56 123 22154 8754";
-        insertBankAccount(iban);
-        RestTemplate halTemplate = HalUtils.getRestTemplateWithHalMessageConverter();
+        bankAccountTestFactory.insertBankAccount(iban);
         ResponseEntity<Resources<Resource<BankAccountVO>>> resourcesEntity = halTemplate.exchange(generateURL(url), HttpMethod.GET, null, new ParameterizedTypeReference<Resources<Resource<BankAccountVO>>>() {
         });
         assertThat(resourcesEntity.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
@@ -70,15 +55,6 @@ public class BankAccountWithRestTemplateTests {
         BankAccountVO ba = resourcesEntity.getBody().getContent().stream().map(bankAccountVOResource -> bankAccountVOResource.getContent()).findFirst().get();
 
         assertThat(ba.getIban()).isEqualTo(iban);
-    }
-
-    private void insertBankAccount(String iban) {
-        TestTransaction.start();
-        TestTransaction.flagForCommit();
-        BankAccount ba = new BankAccount(new BigDecimal("0"));
-        ba.setIban(iban);
-        entityManager.persist(ba);
-        TestTransaction.end();
     }
 
 
