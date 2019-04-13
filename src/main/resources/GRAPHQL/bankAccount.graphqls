@@ -1,0 +1,9 @@
+type BankAccount {
+    id: ID!
+    name: String!
+    iban: String!
+}
+
+type Query {
+    findBankAccounts: [BankAccount]!
+}
