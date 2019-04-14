@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -37,8 +38,18 @@ public class BankTransaction {
     @OneToOne
     private AssetTransfer transfer;
 
+    public BankTransaction() {}
 
+    public BigDecimal getCredit(){
+        return amount.compareTo(BigDecimal.ZERO) > 0 ? amount : BigDecimal.ZERO;
+    }
 
-    private BankTransaction() {}
+    public BigDecimal getDebit(){
+        return amount.compareTo(BigDecimal.ZERO) > 0 ? BigDecimal.ZERO : amount.negate();
+    }
+
+    LocalDate getBookingDate(){
+        return bookingDate.toLocalDate();
+    }
 
 }

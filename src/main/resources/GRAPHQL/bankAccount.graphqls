@@ -2,6 +2,8 @@ type BankAccount {
     id: ID!
     name: String!
     iban: String!
+    balance: Float
+    transactions: [BankTransaction]!
 }
 
 type Query {
@@ -12,4 +14,21 @@ type Query {
 
 type Mutation {
     createBankAccount(name: String, iban: String!): BankAccount
+    addTransaction(accountId: ID, trancactionInput: TransactionInput): BankTransaction
 }
+
+type BankTransaction {
+    id: ID
+    bookingDate: LocalDateTime
+    credit: Float
+    debit: Float
+    description: String
+}
+
+input TransactionInput {
+    credit: Float
+    debit: Float
+    description: String
+}
+
+scalar LocalDateTime

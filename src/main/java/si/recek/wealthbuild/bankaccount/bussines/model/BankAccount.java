@@ -4,12 +4,16 @@ package si.recek.wealthbuild.bankaccount.bussines.model;
 
 
 import lombok.*;
+import si.recek.wealthbuild.bankaccount.bussines.repository.BankTransactionRepository;
+import si.recek.wealthbuild.util.AutowireHelper;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -40,4 +44,9 @@ public class BankAccount {
         this.initialBalance = initialBalance;
         balance = initialBalance;
     }
+
+    public void addTransaction(BankTransaction bankTransaction) {
+        balance = balance.add(bankTransaction.getAmount());
+    }
+
 }
