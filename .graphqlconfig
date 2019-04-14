@@ -1,6 +1,4 @@
 {
-  "name": "Untitled GraphQL Schema",
-  "schemaPath": "./schema.graphql",
   "extensions": {
     "endpoints": {
       "Default GraphQL Endpoint": {
@@ -11,5 +9,6 @@
         "introspect": false
       }
     }
-  }
+  },
+  "name": "Untitled GraphQL Schema"
 }

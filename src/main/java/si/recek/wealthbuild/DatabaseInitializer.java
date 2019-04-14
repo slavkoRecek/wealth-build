@@ -17,7 +17,7 @@ public class DatabaseInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        for (int i = 0; i < 100; i++){
+        for (int i = 0; i < 5; i++){
             createBankAccount();
         }
         System.out.println();

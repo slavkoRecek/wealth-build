@@ -5,5 +5,11 @@ type BankAccount {
 }
 
 type Query {
-    findBankAccounts: [BankAccount]!
+    getBankAccounts: [BankAccount]!
+    getBankAccountByID (id: ID): BankAccount
+    getBankAccountByIban(iban: String): BankAccount
+}
+
+type Mutation {
+    createBankAccount(name: String, iban: String!): BankAccount
 }
